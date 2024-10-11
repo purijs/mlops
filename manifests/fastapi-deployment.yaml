@@ -1,0 +1,61 @@
+# manifests/fastapi-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app
+  namespace: fastapi
+  labels:
+    app: fastapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+        - name: fastapi
+          image: fastapi:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8888
+          env:
+            - name: MINIO_ENDPOINT
+              value: "minio.minio.svc.cluster.local:9000"
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: accessKey
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secretKey
+            - name: RAY_ADDRESS
+              value: "ray://127.0.0.1:10001"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+  namespace: fastapi
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8888
+      protocol: TCP
+      name: http
+  selector:
+    app: fastapi
+
