@@ -42,7 +42,7 @@ spec:
                   name: minio-credentials
                   key: secretKey
             - name: RAY_ADDRESS
-              value: "ray://127.0.0.1:10001"
+              value: "ray://localhost:10001"
 ---
 apiVersion: v1
 kind: Service
