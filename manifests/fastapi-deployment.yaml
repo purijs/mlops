@@ -42,7 +42,7 @@ spec:
                   name: minio-credentials
                   key: secretKey
             - name: RAY_ADDRESS
-              value: "ray://localhost:10001"
+              value: "ray://raycluster-kuberay-head-svc.kuberay.svc.cluster.local:10001"
 ---
 apiVersion: v1
 kind: Service
