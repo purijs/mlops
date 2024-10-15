@@ -44,7 +44,7 @@ spec:
             - name: RAY_ADDRESS
               value: "ray://raycluster-kuberay-head-svc.kuberay.svc.cluster.local:10001"
             - name: MLFLOW_TRACKING_URI
-              value: "http://my-mlflow.mlflow.svc.cluster.local:5000"
+              value: "http://mlflow.mlflow.svc.cluster.local:5000"
 ---
 apiVersion: v1
 kind: Service
